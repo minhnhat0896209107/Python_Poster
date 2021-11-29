@@ -1,0 +1,26 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{title}}</title>
+        {% else %}
+        <title>No title</title>
+        {% endif %}        
+    </head>
+    <body>
+        <h1>Hello,World!</h1>
+        <div>First App: <a href="/index">Home</a></div>
+                        {% if current_user.is_anonymous %}
+        <div>Second App: <a href="/login">Login</a></div>
+                        {% else %}
+                        <a href="/logout">Logout</a> <br>
+                        <a href="/upload">Upload</a>
+                        {% endif %}
+        <div>Register: <a href="/register">Register</a></div>
+        <br>
+
+        {% block content %}
+
+        {% endblock %}
+
+    </body>
+</html>
