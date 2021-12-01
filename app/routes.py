@@ -13,17 +13,18 @@ from flask import request
 from werkzeug.urls import url_parse
 import os
 
-@app.route('/')
-@app.route('/index')
-@login_required
-def index():
-    users = [
-        {'id': 'u01','name':'Nathan'},
-        {'id': 'u02','name':'Nathan Nguyen'},
-        {'id': 'u03','name':'Nevermore'}
-        ]
-    return render_template('index.html', users=users)
+# @app.route('/')
+# @app.route('/index')
+# @login_required
+# def index():
+#     users = [
+#         {'id': 'u01','name':'Nathan'},
+#         {'id': 'u02','name':'Nathan Nguyen'},
+#         {'id': 'u03','name':'Nevermore'}
+#         ]
+#     return render_template('index.html', users=users)
 
+@app.route('/')
 @app.route('/login', methods=['GET','POST'])
 def login():
     # neu user da login thi redirect den index
@@ -47,15 +48,15 @@ def login():
         login_user(user)
 
         #xu ly next
-        next_page = request.args.get('next')
-        if next_page is not None:
-            flash('Next page {}'.format(next_page))
-            if url_parse(next_page).netloc != '':
-                flash('netloc ' + url_parse(next_page).netloc)
-                next_page = '/index'
-        else:
-            next_page = '/index'
-        return redirect(next_page)
+        # next_page = request.args.get('next')
+        # if next_page is not None:
+        #     flash('Next page {}'.format(next_page))
+        #     if url_parse(next_page).netloc != '':
+        #         flash('netloc ' + url_parse(next_page).netloc)
+        #         next_page = '/index'
+        # else:
+        #     next_page = '/index'
+        # return redirect(next_page)
     return render_template('login.html', form=form)
 
 
