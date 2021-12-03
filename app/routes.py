@@ -5,7 +5,7 @@ from flask_login.utils import logout_user
 from app import app
 from app.forms import LoginForm, RegisterForm
 from flask.helpers import flash, url_for
-from app.models import Client
+from app.models import Client,Poster
 from flask_login import login_user, logout_user, login_required
 from flask_login import  current_user
 from app import  db
@@ -13,58 +13,40 @@ from flask import request
 from werkzeug.urls import url_parse
 import os
 
-# @app.route('/')
-# @app.route('/index')
-# @login_required
-# def index():
-#     users = [
-#         {'id': 'u01','name':'Nathan'},
-#         {'id': 'u02','name':'Nathan Nguyen'},
-#         {'id': 'u03','name':'Nevermore'}
-#         ]
-#     return render_template('index.html', users=users)
 
 @app.route('/')
 @app.route('/login', methods=['GET','POST'])
 def login():
     # neu user da login thi redirect den index
     form = LoginForm()
-
-    if form.validate_on_submit():
-        # Kiem tra user co trong db hay khong
-        # Thong tin user lay tu form: form.username.data
-        # user = Client.query.filter_by(email=form.username.data).first()
-
-        # if user is not None:
-        #     password = user.password
-        #     flash('Vo home roi ne')
-        #     if form.password.data == password:
-        #     # Kiem tra password co khop khong
-        #         return redirect(url_for('/home'))
-        #     else:
-        #         return redirect('/login')
-        # else:
-        #     flash('Login fail')
-        #     return render_template('login.html', form = form)
-        # flash('Login of user {}'.format(form.username.data))
-        # login_user(user)
-
-        #xu ly next
-        # next_page = request.args.get('next')
-        # if next_page is not None:
-        #     flash('Next page {}'.format(next_page))
-        #     if url_parse(next_page).netloc != '':
-        #         flash('netloc ' + url_parse(next_page).netloc)
-        #         next_page = '/index'
-        # else:
-        #     next_page = '/index'
-        # return redirect(next_page)
+    if current_user.is_authenticated:
         return redirect('/home')
+    user = Client.query.filter_by(username=form.username.data).first()
+    if user is not None:
+        password = user.password
+        if form.password.data == password:
+            flash('Vo home roi ne')
+            login_user(user)
+            return redirect('/home')
     return render_template('login.html', form=form)
+
+
+
 
 @app.route('/home', methods = ['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    flash("Không có bài viết nào")
+    ls = db.session.query(Client,Poster).filter(Client.id == Poster.id)
+    if ls is None:
+        flash("Không có bài viết nào")
+    else:
+        for i in ls:
+            flash(i.Client.username)
+
+    return render_template('home.html', ls = ls)
+
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -95,10 +77,10 @@ def register():
     return render_template('register.html', form=form)
 
         
-@app.route('/logout')
+@app.route('/logout', methods=['GET','POST'])
 def logout():
     logout_user()
-    return redirect('/index')
+    return redirect('/login')
 
 @app.route('/upload')
 def upload():
