@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+	<!--Custom styles-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home_style.css')}}">
 </head>
 <body>
 
@@ -37,13 +40,29 @@
   </div>
 </nav>
 
-<div>
+<div class="item-post">
     {%for i in ls%}
-    <p>{{i.Client.username}}</p><br>{{i.Poster.content}}
-{%endfor%}
+  </div>
+  <div class="media m-0" style="margin-left: 20px">
+   <div class="d-flex mr-3">
+  <a href=""><img class="img-fluid rounded-circle" src="../static/image/user.png" alt="User"></a>
+   </div>
+   <div class="media-body">
+    <p class="m-0" style="margin-top: 10px ; font-weight: bold; font-size: 24px;color: black;">{{i.Client.username}}</p><br>
+    <p style=" font-weight: bold; font-size: 20px;color: black;">{{i.Poster.title}}</p><br>
+    <p>{{i.Poster.content}}</p><br>
+   
+      <p> 
+        <span >
+          <img width="4px" height="4px" src="../static/image/heart.png" >
+        </span>{{i.Poster.number_like}}</p>
 
+     
+   </div>
+      
+{%endfor%}
 </div>
 
-
-</body>
-</html>
+{%for i in ls_cmt%}
+      <p>{{i.Comment.content}}</p>
+      {%endfor%}

@@ -2,10 +2,11 @@ from flask import render_template, redirect
 import flask
 from flask.wrappers import Request as request
 from flask_login.utils import logout_user
+from sqlalchemy.orm import session
 from app import app
 from app.forms import LoginForm, RegisterForm
 from flask.helpers import flash, url_for
-from app.models import Client,Poster
+from app.models import Client, Comment,Poster
 from flask_login import login_user, logout_user, login_required
 from flask_login import  current_user
 from app import  db
@@ -37,13 +38,14 @@ def login():
 def home():
     flash("Không có bài viết nào")
     ls = db.session.query(Client,Poster).filter(Client.id == Poster.id)
+    ls_cmt = db.session.query(Client,Poster,Comment).filter(Client.id == Comment.client_id).filter(Comment.post_id == Poster.id)
     if ls is None:
         flash("Không có bài viết nào")
     else:
         for i in ls:
             flash(i.Client.username)
 
-    return render_template('home.html', ls = ls)
+    return render_template('home.html', ls = ls,ls_cmt = ls_cmt)
 
 
 
