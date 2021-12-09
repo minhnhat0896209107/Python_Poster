@@ -22,10 +22,14 @@
       <li class="active"><a href="#">POSTER</a></li>
       <li><a href="#">Trang chủ</a></li>
       <li><a href="#">Trang cá nhân</a></li>
+      
     </ul>
+   
     <form class="navbar-form navbar-right" action="/logout", method="POST" novalidate>
-        <button type="submit">Logout</button>
+      <p ><span style="margin-right: 20px; color: white;">Xin Chào:  {{user.username}}</span><button type="submit">Logout</button></p>  
+      
     </form>
+    
     <form class="navbar-form navbar-right" action="/action_page.php" >
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search" name="search">
@@ -40,10 +44,10 @@
   </div>
 </nav>
 
-<div class="item-post">
+<div class="item-post" >
     {%for i in ls%}
-  </div>
-  <div class="media m-0" style="margin-left: 20px">
+  
+  <div class="media m-0"  style="margin-left: 25%; border-style: solid;border-radius: 10px; padding: 20px; width: 50%; " >
    <div class="d-flex mr-3">
   <a href=""><img class="img-fluid rounded-circle" src="../static/image/user.png" alt="User"></a>
    </div>
@@ -54,15 +58,25 @@
    
       <p> 
         <span >
-          <img width="4px" height="4px" src="../static/image/heart.png" >
-        </span>{{i.Poster.number_like}}</p>
+          <img style="margin-right: 10px;" width="4px" height="4px" src="../static/image/heart.png" >
+        </span>{{i.Poster.number_like}} <img style="margin-left: 50px;margin-right: 10px;" src="../static/image/comments.png" >   Comment</p> <br></p>
+       <p> 
 
-     
+        {%for j in ls_cmt%}
+        {%if j.Comment.post_id == i.Poster.id %}
+        <p>  <span style="font-weight: bold;color: black;font-size: 20px;margin-left: 10%;"> <img src="../static/image/profile.png" > {{j.Client.username}}</span> {{   j.Comment.content}}</p> 
+         {%endif%} 
+         {%endfor%}
+
+         <form style="margin-left: 10%;" action="">
+          <input type="text" name="search" placeholder="Comment..">
+          <input type="submit" value="Đăng">
+        </form>
    </div>
-      
+      </div>
 {%endfor%}
 </div>
 
-{%for i in ls_cmt%}
-      <p>{{i.Comment.content}}</p>
-      {%endfor%}
+
+
+

@@ -1,5 +1,5 @@
-from flask import render_template, redirect
-import flask
+from flask import render_template, redirect,session
+import flask 
 from flask.wrappers import Request as request
 from flask_login.utils import logout_user
 from sqlalchemy.orm import session
@@ -36,6 +36,7 @@ def login():
 
 @app.route('/home', methods = ['GET', 'POST'])
 def home():
+    
     flash("Không có bài viết nào")
     ls = db.session.query(Client,Poster).filter(Client.id == Poster.id)
     ls_cmt = db.session.query(Client,Poster,Comment).filter(Client.id == Comment.client_id).filter(Comment.post_id == Poster.id)
@@ -44,8 +45,13 @@ def home():
     else:
         for i in ls:
             flash(i.Client.username)
+    user = "Chưa đăng nhập"
+    if current_user.is_authenticated:
+        user = Client.query.filter_by(id=current_user.get_id()).first()
+       
 
-    return render_template('home.html', ls = ls,ls_cmt = ls_cmt)
+
+    return render_template('home.html', ls = ls,ls_cmt = ls_cmt,user = user)
 
 
 
