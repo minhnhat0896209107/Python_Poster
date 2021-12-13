@@ -68,10 +68,19 @@
          {%endif%} 
          {%endfor%}
 
-         <form style="margin-left: 10%;" action="">
+          <!-- <form style="margin-left: 10%;" action="">
           <input type="text" name="search" placeholder="Comment..">
-          <input type="submit" value="Đăng">
-        </form>
+          <input type="submit"  value="Đăng">
+        </form> -->
+        
+        <form method=post>
+          {{ form.csrf_token }} 
+          <div style="visibility: hidden;">
+            {{ form.getpost_id(value = i.Poster.id)}} 
+          </div>
+          {{ form.content() }} 
+          {{ form.submit() }}
+          </form>
    </div>
       </div>
 {%endfor%}

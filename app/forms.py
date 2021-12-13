@@ -15,3 +15,8 @@ class RegisterForm(FlaskForm):
     address = StringField("address", validators = [DataRequired()])
     phone = StringField("phone", validators = [DataRequired()])
     submit = SubmitField("Registser")
+
+class CommentForm(FlaskForm):
+    content = StringField("content", validators = [DataRequired()])
+    getpost_id = StringField("getpost_id", validators = [DataRequired()])
+    submit = SubmitField("đăng")

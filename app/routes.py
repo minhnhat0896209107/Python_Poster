@@ -4,7 +4,7 @@ from flask.wrappers import Request as request
 from flask_login.utils import logout_user
 from sqlalchemy.orm import session
 from app import app
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, CommentForm
 from flask.helpers import flash, url_for
 from app.models import Client, Comment,Poster
 from flask_login import login_user, logout_user, login_required
@@ -36,10 +36,11 @@ def login():
 
 @app.route('/home', methods = ['GET', 'POST'])
 def home():
-    
+   
     flash("Không có bài viết nào")
     ls = db.session.query(Client,Poster).filter(Client.id == Poster.id)
     ls_cmt = db.session.query(Client,Poster,Comment).filter(Client.id == Comment.client_id).filter(Comment.post_id == Poster.id)
+   
     if ls is None:
         flash("Không có bài viết nào")
     else:
@@ -48,10 +49,22 @@ def home():
     user = "Chưa đăng nhập"
     if current_user.is_authenticated:
         user = Client.query.filter_by(id=current_user.get_id()).first()
+    form = CommentForm()
+    if form.validate_on_submit():
+        print(form.content.data)
+        print(user.id)
+        print(form.getpost_id.data)
+        id_client = user.id
+        id_post = form.getpost_id.data
+        content = form.content.data
+        form.content.data = ''
+        cmt = Comment(client_id=id_client,post_id=id_post,content = content)
+        db.session.add(cmt)
+        db.session.commit()
+
+
        
-
-
-    return render_template('home.html', ls = ls,ls_cmt = ls_cmt,user = user)
+    return render_template('home.html', ls = ls,ls_cmt = ls_cmt,user = user,form = form)
 
 
 
