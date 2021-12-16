@@ -3,8 +3,9 @@ import flask
 from flask.wrappers import Request as request
 from flask_login.utils import logout_user
 from sqlalchemy.orm import session
+from wtforms.fields.simple import SubmitField
 from app import app
-from app.forms import LoginForm, RegisterForm, CommentForm
+from app.forms import LoginForm, ProfileForm, RegisterForm, CommentForm
 from flask.helpers import flash, url_for
 from app.models import Client, Comment,Poster
 from flask_login import login_user, logout_user, login_required
@@ -32,7 +33,29 @@ def login():
     return render_template('login.html', form=form)
 
 
+@app.route('/profile', methods = ['GET', 'POST'])
+def profile():
+    form = ProfileForm()
+    if current_user.is_authenticated:
+        user = Client.query.filter_by(id=current_user.get_id()).first()
+    
+    if form.validate_on_submit():
+        id = current_user.get_id()
+        email = form.email.data
+        username = form.username.data
+        address = form.address.data
+        phone = form.phone.data
+        password = form.password.data
 
+        print (id + " " + email + " " + username + " " + address + " " + password +  " " + phone)
+        client = Client.query.filter_by(id = id).first()
+        client.username = username
+        client.email = email
+        client.address = address
+        client.password = password
+        client.phone = phone
+        db.session.commit()
+    return render_template('profile.html', user = user, form = form)
 
 @app.route('/home', methods = ['GET', 'POST'])
 def home():
@@ -61,9 +84,6 @@ def home():
         cmt = Comment(client_id=id_client,post_id=id_post,content = content)
         db.session.add(cmt)
         db.session.commit()
-
-
-       
     return render_template('home.html', ls = ls,ls_cmt = ls_cmt,user = user,form = form)
 
 
