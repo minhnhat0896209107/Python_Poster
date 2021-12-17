@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" style="margin-bottom: 50px;">
   <div class="container-fluid">
     <div class="navbar-form navbar-left">
       <img src ="../static/image/img_book.png" style='height: 50px; width: 50px'>
@@ -44,10 +44,12 @@
   </div>
 </nav>
 
+<a href="poster"	style=" margin-top: 100px; margin-left:25% ; text-decoration: none; background-color: #6666ff; padding-top: 10px; padding-bottom: 10px; padding-right: 20px; padding-left: 20px; border-radius: 5px; color: black">Thêm bài viết</a>
+
 <div class="item-post" >
     {%for i in ls%}
   
-  <div class="media m-0"  style="margin-left: 25%; border-style: solid;border-radius: 10px; padding: 20px; width: 50%; " >
+  <div class="media m-0"  style="margin-left: 24%; border-style: solid;border-radius: 10px; padding: 20px; width: 50%; " >
    <div class="d-flex mr-3">
   <a href=""><img class="img-fluid rounded-circle" src="../static/image/user.png" alt="User"></a>
    </div>

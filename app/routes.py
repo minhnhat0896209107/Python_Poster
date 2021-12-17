@@ -5,7 +5,7 @@ from flask_login.utils import logout_user
 from sqlalchemy.orm import session
 from wtforms.fields.simple import SubmitField
 from app import app
-from app.forms import LoginForm, ProfileForm, RegisterForm, CommentForm
+from app.forms import LoginForm, PosterForm, ProfileForm, RegisterForm, CommentForm
 from flask.helpers import flash, url_for
 from app.models import Client, Comment,Poster
 from flask_login import login_user, logout_user, login_required
@@ -35,9 +35,12 @@ def login():
 
 @app.route('/profile', methods = ['GET', 'POST'])
 def profile():
+    
+
     form = ProfileForm()
     if current_user.is_authenticated:
         user = Client.query.filter_by(id=current_user.get_id()).first()
+        ls1 = db.session.query(Poster,Client).filter(Poster.client_id == current_user.get_id(),Client.id == Poster.client_id)
     
     if form.validate_on_submit():
         id = current_user.get_id()
@@ -55,15 +58,34 @@ def profile():
         client.password = password
         client.phone = phone
         db.session.commit()
-    return render_template('profile.html', user = user, form = form)
+    return render_template('profile.html', user = user, form = form, ls1 = ls1)
+
+@app.route('/poster', methods = ['GET', 'POST'])
+def poster():
+    form = PosterForm()
+    if current_user.is_authenticated:
+        user = Client.query.filter_by(id=current_user.get_id()).first()
+        if form.validate_on_submit():
+            title = form.title.data
+            content = form.content.data
+            image = form.image.data
+            id = current_user.get_id()
+            print( id + "   " + title + "   " + content + "    "  + image) 
+            p = Poster(title= title, content=content, image = image, client_id =id, number_like = 217)
+            db.session.add(p)
+            db.session.commit()
+            return redirect('/home')        
+
+    return render_template('poster.html',user = user, form = form)
+
 
 @app.route('/home', methods = ['GET', 'POST'])
 def home():
    
     flash("Không có bài viết nào")
-    ls = db.session.query(Client,Poster).filter(Client.id == Poster.id)
+    ls = db.session.query(Client,Poster).filter(Client.id == Poster.client_id)
     ls_cmt = db.session.query(Client,Poster,Comment).filter(Client.id == Comment.client_id).filter(Comment.post_id == Poster.id)
-   
+
     if ls is None:
         flash("Không có bài viết nào")
     else:
@@ -85,7 +107,6 @@ def home():
         db.session.add(cmt)
         db.session.commit()
     return render_template('home.html', ls = ls,ls_cmt = ls_cmt,user = user,form = form)
-
 
 
 

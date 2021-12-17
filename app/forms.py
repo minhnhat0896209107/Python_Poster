@@ -27,4 +27,11 @@ class ProfileForm(FlaskForm):
     email = StringField("email", validators = [DataRequired()])
     address = StringField("address", validators = [DataRequired()])
     phone = StringField("phone", validators = [DataRequired()])
-    submit = SubmitField("Update")
+    submit = SubmitField("Cập nhật")
+
+
+class PosterForm(FlaskForm):
+    title = StringField("title", validators = [DataRequired()])   
+    content = StringField("content", validators = [DataRequired()])
+    image = StringField("image", validators = [DataRequired()])
+    submit = SubmitField("Đăng")

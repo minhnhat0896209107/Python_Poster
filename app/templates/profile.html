@@ -48,48 +48,48 @@
         {{ form.hidden_tag() }}
         <table>
             
-            <tr style="padding: 10px;">
-                <td>
-                    <label for="exampleInputEmail1">User name:</label>
+            <tr style="margin: 30px; padding: 10px;">
+                <td style="margin: 50px;padding: 10px;">
+                    <label for="exampleInputEmail1">User name</label>
                 </td>
-                <td>
+                <td style="margin: 50px;padding: 10px;">
                     {{ form.username(style="border-radius: 4px;", size="40", value = user.username) }}
                 </td>
             </tr>
             
             <tr style="padding: 10px;">
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     <label for="exampleInputPassword1">Email</label>
                 </td>
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     {{ form.email(style="border-radius: 4px;", size="40", value = user.email) }}
                 </td>
             </tr>
 
             <tr style="padding: 10px;">
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     <label for="exampleInputPassword1">Password</label>
                 </td>
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     {{ form.password(style="border-radius: 4px;", size="40", value = user.password, type = "password") }}
                 </td>
             </tr>
 
 
             <tr style="padding: 10px;">
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     <label for="exampleInputEmail1">Address</label>
                 </td>
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     {{ form.address(style="border-radius: 4px;", size="40", value = user.address) }}
                 </td>
             </tr>
 
             <tr style="padding: 10px;">
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     <label for="exampleInputEmail1">Phone</label>
                 </td>
-                <td>
+                <td  style="margin: 50px;padding: 10px;">
                     {{ form.phone(style="border-radius: 4px;" ,size="40", value = user.phone ) }}
                 </td>
             </tr>
@@ -98,7 +98,15 @@
         {{ form.submit(class="btn btn-success",style="border-radius:4px;margin-top: 20px;") }} 
 
     </form>
-
+    <hr width="60%" size="10px" align="center"
+			style="height: 2px; border-width: 0; color: #ff9966; background-color: black; margin-top: 20px" />
+    
+</div>
+<div>
+    <h2>Quản lý bài viết</h2>
+    {% for i in ls1 %}
+      {{i.Client.username}}
+    {% endfor %}
 
 </div>
 </body>

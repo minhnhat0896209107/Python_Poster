@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Poster</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+	<!--Custom styles-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home_style.css')}}">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse" style="margin-bottom: 50px;">
+  <div class="container-fluid">
+    <div class="navbar-form navbar-left">
+      <img src ="../static/image/img_book.png" style='height: 50px; width: 50px'>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="home">Facebook Fake</a></li>
+      <li><a href="home">Trang chủ</a></li>
+      <li><a href="profile">Trang cá nhân</a></li>
+      
+    </ul>
+   
+    <form class="navbar-form navbar-right" action="/logout", method="POST" novalidate>
+      <p ><span style="margin-right: 20px; color: white;">Xin Chào:  {{user.username}}</span><button type="submit">Logout</button></p>  
+      
+    </form>
+    
+    <form class="navbar-form navbar-right" action="/action_page.php" >
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search" name="search">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+     
+  </div>
+</nav>
+
+<div align = "center" style = "margin-top: 50px;">
+<img src= "../static/image/new-post.png" style="margin-bottom: 30px;">
+
+<form  action="/poster" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <table>
+        
+        <tr style="padding: 10px;">
+            <td style="margin: 50px;padding: 10px;">
+                <label for="exampleInputEmail1">Tiêu đề :</label>
+            </td >
+            <td style="margin: 50px;padding: 10px;">
+                {{ form.title(style="border-radius: 4px;", size="40",) }}
+            </td>
+        </tr>
+        
+        <tr style="padding: 10px;">
+            <td style="margin: 50px;padding: 10px;">
+                <label for="exampleInputPassword1">Nội dung :</label>
+            </td>
+            <td style="margin: 50px;padding: 10px;">
+                {{ form.content(style="border-radius: 4px;", size="40") }}
+            </td>
+        </tr>
+
+        <tr style="padding: 10px;">
+            <td style="margin: 50px;padding: 10px;">
+                <label for="exampleInputPassword1">Ảnh:</label>
+            </td>
+            <td style="margin: 50px;padding: 10px;">
+                {{ form.image(style="border-radius: 4px;", size="40") }}
+            </td>
+        </tr>
+
+    </table>
+    <!-- <button style="margin-top: 20px;" type="submit" name="btnupdate" class="btn btn-primary">Update</button> -->
+    {{ form.submit(class="btn btn-success",style="border-radius:4px;margin-top: 20px;") }} 
+
+</form>
+</div>
+
+
+
+
