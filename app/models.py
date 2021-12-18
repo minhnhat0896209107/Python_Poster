@@ -41,6 +41,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('poster.id'))
     content = db.Column(db.String(1000), index=True)
 
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))

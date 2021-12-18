@@ -5,13 +5,13 @@ from flask_login.utils import logout_user
 from sqlalchemy.orm import session
 from wtforms.fields.simple import SubmitField
 from app import app
-from app.forms import LoginForm, PosterForm, ProfileForm, RegisterForm, CommentForm
+from app.forms import DetailForm, UpdatePosterForm, LoginForm, PosterForm, ProfileForm, RegisterForm, CommentForm
 from flask.helpers import flash, url_for
 from app.models import Client, Comment,Poster
 from flask_login import login_user, logout_user, login_required
 from flask_login import  current_user
 from app import  db
-from flask import request
+from flask import request, session
 from werkzeug.urls import url_parse
 import os
 
@@ -32,15 +32,28 @@ def login():
             return redirect('/home')
     return render_template('login.html', form=form)
 
+@app.route('/detail' ,methods = ['GET', 'POST'])
+def detail():
+    formdt = UpdatePosterForm()
+
+    if 'idpost' in session:
+        idpost = session['idpost']
+        p = Poster.query.filter_by(id = idpost).first()
+        print(p.title + " " + p.content)
+    print("trc btn")
+    if formdt.validate_on_submit():  
+        print('click btn 11')
+    
+    return render_template('detail.html', p = p, formdt = formdt)
 
 @app.route('/profile', methods = ['GET', 'POST'])
 def profile():
-    
-
     form = ProfileForm()
+    formdetail = DetailForm()
     if current_user.is_authenticated:
         user = Client.query.filter_by(id=current_user.get_id()).first()
         ls1 = db.session.query(Poster,Client).filter(Poster.client_id == current_user.get_id(),Client.id == Poster.client_id)
+
     
     if form.validate_on_submit():
         id = current_user.get_id()
@@ -58,7 +71,14 @@ def profile():
         client.password = password
         client.phone = phone
         db.session.commit()
-    return render_template('profile.html', user = user, form = form, ls1 = ls1)
+    if formdetail.validate_on_submit():
+        idpost = formdetail.idpost.data
+        if request.method == 'POST':
+            session['idpost'] = idpost
+            return redirect(url_for('detail'))
+        print("id =" + idpost)
+        print("vo day roi ne hehe")
+    return render_template('profile.html', user = user, form = form, formdetail = formdetail, ls1 = ls1)
 
 @app.route('/poster', methods = ['GET', 'POST'])
 def poster():
