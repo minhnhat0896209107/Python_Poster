@@ -40,8 +40,12 @@ class DetailForm(FlaskForm):
     idpost = StringField("idpost", validators=[DataRequired()])
     submit = SubmitField("Xem chi tiết")
 
-class UpdatePosterForm(FlaskForm):
+
+
+class EditForm(FlaskForm):
     idpost = StringField("idpost", validators=[DataRequired()])
-    title = StringField("title", validators=[DataRequired()])
-    content = StringField("content", validators=[DataRequired()])
-    submit = SubmitField("Sửa")
+    title = StringField("title", validators = [DataRequired()])   
+    content = StringField("content", validators = [DataRequired()])
+    submitedit = SubmitField("Sửa")
+    submitdelete = SubmitField("Xóa")
+

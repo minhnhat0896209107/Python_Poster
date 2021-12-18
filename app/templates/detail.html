@@ -21,14 +21,13 @@
             Back Home</a>
     </div>
 
-    
-    <form action="/detail" method="post" novalidate>
-        {{ formdt.hidden_tag() }}
-        {{ formdt.title(style="border-radius: 4px;", size="40" , value = p.title, type = "text") }}
-        {{ formdt.content(style="border-radius: 4px;", size="40", value = p.content, type = "text") }}
-         {{ formdt.submit(class="btn btn-success",style="border-radius:4px;margin-top: 20px;") }}
-    </form>
-
+    <form method=post>
+        {{ form.csrf_token }} 
+        {{ form.title(style="border-radius: 4px;" ,size="40", value = p.title) }} 
+        {{ form.content(style="border-radius: 4px;" ,size="40", value =p.content) }} 
+        {{ form.submitedit(class="btn btn-success",style="border-radius:4px;margin-top: 20px;") }}
+        {{ form.submitdelete(class="btn btn-success",style="border-radius:4px;margin-top: 20px;") }}
+        </form>
     
 </body>
 

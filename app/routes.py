@@ -5,7 +5,7 @@ from flask_login.utils import logout_user
 from sqlalchemy.orm import session
 from wtforms.fields.simple import SubmitField
 from app import app
-from app.forms import DetailForm, UpdatePosterForm, LoginForm, PosterForm, ProfileForm, RegisterForm, CommentForm
+from app.forms import DetailForm, EditForm, LoginForm, PosterForm, ProfileForm, RegisterForm, CommentForm
 from flask.helpers import flash, url_for
 from app.models import Client, Comment,Poster
 from flask_login import login_user, logout_user, login_required
@@ -34,17 +34,22 @@ def login():
 
 @app.route('/detail' ,methods = ['GET', 'POST'])
 def detail():
-    formdt = UpdatePosterForm()
-
+    form = EditForm()
     if 'idpost' in session:
         idpost = session['idpost']
         p = Poster.query.filter_by(id = idpost).first()
         print(p.title + " " + p.content)
-    print("trc btn")
-    if formdt.validate_on_submit():  
-        print('click btn 11')
     
-    return render_template('detail.html', p = p, formdt = formdt)
+
+
+    if form.validate_on_submit:
+        print("1111111111111111111111111")
+        if form.submitedit.data:
+            print("sửa 1111111111111")
+        if form.submitdelete.data:
+            print("Xóa 1111111111111")
+
+    return render_template('detail.html', p = p, form = form)
 
 @app.route('/profile', methods = ['GET', 'POST'])
 def profile():
