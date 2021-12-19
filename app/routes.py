@@ -37,17 +37,26 @@ def detail():
     form = EditForm()
     if 'idpost' in session:
         idpost = session['idpost']
-        p = Poster.query.filter_by(id = idpost).first()
+        p =Poster.query.filter_by(id = idpost).first()
         print(p.title + " " + p.content)
     
 
-
+    
     if form.validate_on_submit:
-        print("1111111111111111111111111")
+        title = form.title.data
+        content = form.content.data
         if form.submitedit.data:
-            print("sửa 1111111111111")
+            detail = Poster.query.filter_by(id = idpost).first()
+            detail.title = title
+            detail.content = content
+            db.session.commit()
+            return redirect(url_for('profile'))
+            
         if form.submitdelete.data:
-            print("Xóa 1111111111111")
+            Poster.query.filter_by(id = idpost).delete()
+            db.session.commit()
+            return redirect(url_for('profile'))
+
 
     return render_template('detail.html', p = p, form = form)
 
